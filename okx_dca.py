@@ -275,6 +275,8 @@ def do_sync():
     manual = [r for r in data.get("records", []) if r.get("source") == "manual"]
     overrides = data.get("overrides", {})
     merged = apply_overrides(records, overrides)
+    # 也对旧的记录应用overrides，这样被标记hidden的记录不会残留
+    manual = apply_overrides(manual, overrides)
     data["records"] = manual + merged
     data["holdings"] = holdings
     data["prices"] = pm
